@@ -1,0 +1,17 @@
+{
+  "name": "focus-assistant",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local-first desktop focus assistant",
+  "scripts": {
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "build:dir": "tauri build --no-bundle",
+    "check": "npm --prefix frontend run check",
+    "test": "npm --prefix frontend test",
+    "tauri": "tauri"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "2.12.4"
+  }
+}
