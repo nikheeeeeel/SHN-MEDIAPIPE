@@ -20,6 +20,7 @@ export interface UseFocusSessionResult {
   pause: () => void;
   resume: () => void;
   end: () => void;
+  lose: () => void;
   reset: () => void;
 }
 
@@ -69,6 +70,12 @@ export function useFocusSession(): UseFocusSessionResult {
     dispatch({ type: "end", now: endedAt });
   }, []);
 
+  const lose = useCallback(() => {
+    const endedAt = Date.now();
+    setNow(endedAt);
+    dispatch({ type: "lose", now: endedAt });
+  }, []);
+
   const reset = useCallback(() => {
     setNow(Date.now());
     dispatch({ type: "reset" });
@@ -83,6 +90,7 @@ export function useFocusSession(): UseFocusSessionResult {
     pause,
     resume,
     end,
+    lose,
     reset,
   };
 }

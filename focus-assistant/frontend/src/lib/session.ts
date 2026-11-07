@@ -9,6 +9,7 @@ export const initialSessionState: SessionState = {
   intention: "",
   plannedMinutes: 0,
   plannedMs: 0,
+  sessionStartedAt: null,
   startedAt: null,
   accumulatedMs: 0,
   endedAt: null,
@@ -88,6 +89,7 @@ export function sessionReducer(
         intention: action.config.intention.trim(),
         plannedMinutes: minutes,
         plannedMs: minutes * 60_000,
+        sessionStartedAt: action.now,
         startedAt: action.now,
         accumulatedMs: 0,
         endedAt: null,
@@ -147,6 +149,17 @@ export function sessionReducer(
         action.now,
         elapsed >= state.plannedMs ? "completed" : "ended",
       );
+    }
+
+    case "lose": {
+      if (state.status === "idle" || state.status === "completed") return state;
+
+      const elapsed =
+        state.status === "running" && state.startedAt !== null
+          ? state.accumulatedMs + Math.max(0, action.now - state.startedAt)
+          : state.accumulatedMs;
+
+      return complete(state, elapsed, action.now, "lost");
     }
 
     case "reset":

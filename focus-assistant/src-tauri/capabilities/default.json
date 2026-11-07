@@ -1,7 +1,7 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
-  "description": "Default capabilities for the main Focus window",
-  "windows": ["main"],
+  "description": "Default capabilities for the Focus windows",
+  "windows": ["main", "reminder"],
   "permissions": ["core:default"]
 }

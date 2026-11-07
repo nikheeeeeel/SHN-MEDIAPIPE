@@ -58,4 +58,40 @@ describe("Focus app", () => {
       screen.getByRole("button", { name: /start focus session/i }),
     ).toBeDisabled();
   });
+
+  it("opens settings, saves them, and applies them to the next session", async () => {
+    window.localStorage.clear();
+    render(<App />);
+
+    await screen.findByRole("heading", { name: /what are you here to do/i });
+
+    fireEvent.click(
+      screen.getByRole("button", { name: /open settings/i }),
+    );
+
+    expect(
+      screen.getByRole("heading", { name: /make the nudges fit you/i }),
+    ).toBeInTheDocument();
+
+    fireEvent.change(screen.getByLabelText(/face absence threshold/i), {
+      target: { value: "90" },
+    });
+    fireEvent.change(screen.getByLabelText(/gaze-away threshold/i), {
+      target: { value: "150" },
+    });
+    fireEvent.change(screen.getByLabelText(/reminder cooldown/i), {
+      target: { value: "240" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /save settings/i }));
+
+    expect(await screen.findByText(/after 90 sec/i)).toBeInTheDocument();
+    expect(
+      JSON.parse(window.localStorage.getItem("focus.settings.v1") ?? "{}"),
+    ).toEqual({
+      absenceSeconds: 90,
+      gazeAwaySeconds: 150,
+      cooldownSeconds: 240,
+      cameraIndex: 0,
+    });
+  });
 });

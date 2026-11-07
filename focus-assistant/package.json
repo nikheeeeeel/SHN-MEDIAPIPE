@@ -1,12 +1,14 @@
 {
   "name": "focus-assistant",
-  "version": "0.1.0",
+  "version": "0.4.0",
   "private": true,
   "description": "Local-first desktop focus assistant",
   "scripts": {
     "dev": "tauri dev",
     "build": "tauri build",
     "build:dir": "tauri build --no-bundle",
+    "build:vision": "bash scripts/build_vision_worker.sh",
+    "package": "bash scripts/build_vision_worker.sh && tauri build",
     "check": "npm --prefix frontend run check",
     "test": "npm --prefix frontend test",
     "tauri": "tauri"

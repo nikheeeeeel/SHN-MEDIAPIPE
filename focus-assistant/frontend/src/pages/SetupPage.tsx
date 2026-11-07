@@ -13,15 +13,17 @@ import {
   isValidIntention,
   MAX_INTENTION_LENGTH,
 } from "../lib/session";
+import type { MonitoringSettings } from "../types/monitoring";
 import type { SessionConfig } from "../types/session";
 
 const DURATION_PRESETS = [15, 25, 45, 60, 90];
 
 interface SetupPageProps {
   onStart: (config: SessionConfig) => void;
+  settings: MonitoringSettings;
 }
 
-export function SetupPage({ onStart }: SetupPageProps) {
+export function SetupPage({ onStart, settings }: SetupPageProps) {
   const [intention, setIntention] = useState("");
   const [duration, setDuration] = useState("25");
 
@@ -180,13 +182,28 @@ export function SetupPage({ onStart }: SetupPageProps) {
                 Off
               </dd>
             </div>
+            <div className="flex items-center justify-between gap-5">
+              <dt className="text-muted">Away nudge</dt>
+              <dd className="font-mono text-[13px] tabular-nums text-ink/90">
+                after {settings.absenceSeconds} sec
+              </dd>
+            </div>
+            <div className="flex items-center justify-between gap-5">
+              <dt className="text-muted">Gaze nudge</dt>
+              <dd className="font-mono text-[13px] tabular-nums text-ink/90">
+                after {settings.gazeAwaySeconds} sec
+              </dd>
+            </div>
           </dl>
 
           <div className="mt-5 rounded-2xl border border-line/70 bg-canvas/40 p-4">
-            <p className="text-xs font-medium text-ink/85">Timer only</p>
+            <p className="text-xs font-medium text-ink/85">
+              Face presence + gaze
+            </p>
             <p className="mt-1 text-[11px] leading-relaxed text-muted">
-              Face and gaze monitoring is not connected in this build. The
-              camera is not opened or used during your session.
+              Focus checks faces and approximate iris-based gaze locally. There
+              is a short centre-screen calibration at the start. If gaze is not
+              reliable, it falls back to face presence. No frames are recorded.
             </p>
           </div>
         </section>
@@ -201,7 +218,7 @@ export function SetupPage({ onStart }: SetupPageProps) {
           <ul className="mt-4 space-y-3 text-[11px] leading-relaxed text-muted">
             <li className="flex gap-2">
               <Check aria-hidden="true" className="mt-0.5 size-3 shrink-0 text-focus/70" />
-              Camera frames never leave your computer.
+              Camera frames are processed on this device only.
             </li>
             <li className="flex gap-2">
               <Check aria-hidden="true" className="mt-0.5 size-3 shrink-0 text-focus/70" />
@@ -209,7 +226,7 @@ export function SetupPage({ onStart }: SetupPageProps) {
             </li>
             <li className="flex gap-2">
               <Check aria-hidden="true" className="mt-0.5 size-3 shrink-0 text-focus/70" />
-              The camera will be released whenever monitoring stops.
+              The camera is released when you pause or end.
             </li>
           </ul>
         </section>

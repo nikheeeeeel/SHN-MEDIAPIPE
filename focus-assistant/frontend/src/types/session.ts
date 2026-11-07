@@ -1,6 +1,6 @@
 export type SessionStatus = "idle" | "running" | "paused" | "completed";
 
-export type SessionEndReason = "completed" | "ended";
+export type SessionEndReason = "completed" | "ended" | "lost";
 
 export interface SessionConfig {
   intention: string;
@@ -12,6 +12,8 @@ export interface SessionState {
   intention: string;
   plannedMinutes: number;
   plannedMs: number;
+  /** Wall-clock timestamp when this session first began. Stable across pauses. */
+  sessionStartedAt: number | null;
   /** Timestamp when the current running segment began. */
   startedAt: number | null;
   /** Active time accumulated across previous running segments. */
@@ -26,4 +28,5 @@ export type SessionAction =
   | { type: "resume"; now: number }
   | { type: "tick"; now: number }
   | { type: "end"; now: number }
+  | { type: "lose"; now: number }
   | { type: "reset" };

@@ -1,0 +1,7 @@
+# Local vision worker dependencies.
+# The project venv at the repository root is used by the Tauri shell:
+#   python3 -m venv ../venv
+#   ../venv/bin/pip install -r vision/requirements.txt
+mediapipe==1.2.2
+opencv-python==5.0.0.93
+numpy==2.5.4

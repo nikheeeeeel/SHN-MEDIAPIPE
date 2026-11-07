@@ -29,6 +29,7 @@ describe("sessionReducer", () => {
     expect(state.intention).toBe("Study DBMS");
     expect(state.plannedMinutes).toBe(25);
     expect(state.plannedMs).toBe(25 * MINUTE);
+    expect(state.sessionStartedAt).toBe(T0);
     expect(state.startedAt).toBe(T0);
   });
 
@@ -46,6 +47,7 @@ describe("sessionReducer", () => {
     expect(paused.status).toBe("paused");
     expect(paused.accumulatedMs).toBe(10 * MINUTE);
     expect(paused.startedAt).toBeNull();
+    expect(paused.sessionStartedAt).toBe(T0);
 
     expect(getElapsedMs(resumed, T0 + 17 * MINUTE)).toBe(12 * MINUTE);
     expect(getRemainingMs(resumed, T0 + 17 * MINUTE)).toBe(13 * MINUTE);
@@ -127,6 +129,25 @@ describe("sessionReducer", () => {
     ).toBe("idle");
     expect(
       sessionReducer(initialSessionState, { type: "end", now: T0 }).status,
+    ).toBe("idle");
+  });
+
+  it("ends a session as lost when the hangman completes", () => {
+    const started = start(25);
+    const lost = sessionReducer(
+      started,
+      { type: "lose", now: T0 + 6 * MINUTE },
+    );
+
+    expect(lost.status).toBe("completed");
+    expect(lost.endReason).toBe("lost");
+    expect(lost.accumulatedMs).toBe(6 * MINUTE);
+    expect(lost.endedAt).toBe(T0 + 6 * MINUTE);
+  });
+
+  it("ignores lose while idle", () => {
+    expect(
+      sessionReducer(initialSessionState, { type: "lose", now: T0 }).status,
     ).toBe("idle");
   });
 

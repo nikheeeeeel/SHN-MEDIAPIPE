@@ -1,0 +1,4 @@
+# Packaging-only dependency for freezing the vision worker.
+# Install into the project venv:
+#   ../venv/bin/pip install -r vision/requirements-packaging.txt
+pyinstaller==6.22.3
