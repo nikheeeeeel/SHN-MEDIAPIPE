@@ -29,9 +29,9 @@ NA
 
 ### 📸 Show Us What You Built!
 
-[Watch the demo video](assets/demo.webm)
+[Watch the demo video](assets/demo.mp4)
 
-<video src="assets/demo.webm" controls width="100%"></video>
+https://github.com/user-attachments/assets/cb0dfa80-0998-4618-8557-9728d9795111
 
 ### ✨ Cool Things It Does
 - Local face-presence and iris-based gaze estimation with centre-screen calibration.
